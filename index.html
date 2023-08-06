@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Vumeter</title>
+    <script src="https://cdn.jsdelivr.net/raphael/2.1.4/raphael-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.6.1/justgage.min.js"></script>
+</head>
+<body>
+    <div id="gauge" style="width:300px; height:300px;"></div>
+
+    <script>
+        // Create a new gauge
+        var g = new JustGage({
+            id: "gauge",
+            value: 0, // Initial value, we'll update this with actual temperature
+            min: 0,
+            max: 300, // Assuming max temperature for a bakery oven
+            title: "Oven Temperature",
+            label: "°C",
+            levelColors: ['#00A5CF', '#FFDD00', '#FF0000'] // Colors for different temperature levels
+        });
+
+        // Fetch the temperature every 5 seconds and update the gauge
+        setInterval(function() {
+            fetch('/temp/1')
+            .then(response => response.text())
+            .then(temp => {
+                console.log(temp)
+                g.refresh(parseFloat(temp));
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
